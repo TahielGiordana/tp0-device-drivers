@@ -25,6 +25,7 @@ static int Device_Open = 0;     /* Is device open?
                                 * Used to prevent multiple access to device */
 static char msg[BUF_LEN];       /* The msg the device will give when asked */
 static char *msg_Ptr;
+static int msg_length = 0;
 
 static struct file_operations fops = {
             .read = device_read,
@@ -116,36 +117,23 @@ static ssize_t device_read(struct file *filp,   /* see include/linux/fs.h   */
     * Number of bytes actually written to the buffer
     */
     int bytes_read = 0;
-    size_t i = 0;
-
+    int i = 0;
     /*         
     * If we're at the end of the message,          
     * return 0 signifying end of file          
     */
     if (*msg_Ptr == 0)
         return 0;        
-    
+     
     /*
     * Actually put the data into the buffer
-    */ 
-
-    while (length && *msg_Ptr) {
-    /*
-                        
-                              
-            * The buffer is in the user data segment, not the kernel                  
-            * segment so "*" assignment won't work.  We have to use                  
-            * put_user which copies data from the kernel data segment to                 
-            * the user data segment.                  
-                            
-           
-           put_user(*(msg_Ptr++ ), buffer++);                
-           length--;                
-           bytes_read++;        
     */
-    }  
-          
-    
+    for(i = msg_length - 1; i >= 0 && bytes_read < length; --i ){
+        put_user(msg[i], buffer++);
+        ++bytes_read;
+        *(msg_Ptr)++;
+    }
+    *offset = bytes_read;      
     /*          
     * Most read functions return the number of bytes put into the buffer         
     */        
@@ -164,6 +152,7 @@ static ssize_t device_write(struct file *filp, const char *buff, size_t len, lof
     }
 
     msg_Ptr = msg;
+    msg_length = len;
     printk(KERN_INFO "Msg received: %s\n", msg);
     return i;
 
