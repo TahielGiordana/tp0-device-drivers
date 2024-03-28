@@ -1,0 +1,1 @@
+cmd_/home/alumno/Descargas/tp0-device-drivers/charDriver/charDevice.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/alumno/Descargas/tp0-device-drivers/charDriver/charDevice.ko /home/alumno/Descargas/tp0-device-drivers/charDriver/charDevice.o /home/alumno/Descargas/tp0-device-drivers/charDriver/charDevice.mod.o;  true

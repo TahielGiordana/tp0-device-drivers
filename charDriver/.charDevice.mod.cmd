@@ -1,0 +1,1 @@
+cmd_/home/alumno/Descargas/tp0-device-drivers/charDriver/charDevice.mod := { echo  /home/alumno/Descargas/tp0-device-drivers/charDriver/charDevice.o;  echo; } > /home/alumno/Descargas/tp0-device-drivers/charDriver/charDevice.mod
